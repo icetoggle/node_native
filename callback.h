@@ -79,7 +79,7 @@ namespace native
         template<typename callback_t, typename ...A>
         static typename std::result_of<callback_t(A...)>::type invoke(void* target, int cid, A&& ... args)
         {
-            auto x = dynamic_cast<internal::callback_object<callback_t>*>(reinterpret_cast<callbacks*>(target)->lut_[cid].get());
+            auto x = static_cast<internal::callback_object<callback_t>*>(reinterpret_cast<callbacks*>(target)->lut_[cid].get());
             assert(x);
             return x->invoke(std::forward<A>(args)...);
         }

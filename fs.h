@@ -156,7 +156,7 @@ namespace native
             if(uv_fs_read(uv_default_loop(), req, fd, &buf, len, offset, [](uv_fs_t* req){
                 assert(req->fs_type == UV_FS_READ);
 
-                if(req->result)
+                if(req->result < 0)
                 {
                     // system error
                     internal::invoke_from_req<decltype(callback)>(req, std::string(), error(req->result));
@@ -189,7 +189,7 @@ namespace native
 			int ret = uv_fs_write(uv_default_loop(), req, fd, &nbuf, len, offset, [](uv_fs_t* req) {
 				assert(req->fs_type == UV_FS_WRITE);
 
-				if (req->result)
+				if (req->result < 0)
 				{
 					internal::invoke_from_req<decltype(callback)>(req, 0, error(req->result));
 				}
